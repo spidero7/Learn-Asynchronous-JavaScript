@@ -1,4 +1,4 @@
-const getTodo = (callback) => { // Arrow function
+const getTodo = (resource, callback) => { // Arrow function
   const request = new XMLHttpRequest(); // HTTP Request
 
   request.addEventListener('readystatechange', () => {
@@ -11,21 +11,18 @@ const getTodo = (callback) => { // Arrow function
     }
   });
 
-  request.open('GET', 'todos.json'); // GET from API Endpoint
+  request.open('GET', resource); // GET from API Endpoint
   request.send();
 };
 
-console.log(1)
-console.log(2)
 
-getTodo((error, data) => {
-  console.log('Callback fired');
-  if (error) {
-    console.log(error);
-  } else {
+// Callback hell :(
+getTodo('todos-2.json', (error, data) => {
+  console.log(data);
+  getTodo('todos-3.json', (error, data) => {
     console.log(data);
-  }
+    getTodo('todos.json', (error, data) => {
+      console.log(data)
+    })
+  })
 });
-
-console.log(3)
-console.log(4)
