@@ -1,3 +1,4 @@
+// Old way getting data from API
 const getTodo = (resource) => { // Arrow function
 
   return new Promise((resolve, reject) => {
@@ -19,8 +20,14 @@ const getTodo = (resource) => { // Arrow function
   
 };
 
-getTodo('todos.json').then(data => {
-  console.log('promise resolved:', data);
+getTodo('./data/todos.json').then(data => {
+  console.log('promise 1 resolved:', data);
+  return getTodo('./data/todos-2.json');
+}).then(data => {
+  console.log('promise 2 resolved:', data);
+  return getTodo('./data/todos-3.json');
+}).then(data => {
+  console.log('promise 3 resolved:', data)
 }).catch(error => {
   console.log('promise rejected:', error);
 });
