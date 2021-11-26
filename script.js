@@ -1,28 +1,51 @@
-const getTodo = (resource, callback) => { // Arrow function
-  const request = new XMLHttpRequest(); // HTTP Request
+const getTodo = (resource) => { // Arrow function
 
-  request.addEventListener('readystatechange', () => {
-    // console.log(request, request.readyState);
-    if (request.readyState === 4 && request.status == 200) { // 4 stage -> Completed 
-      const data = JSON.parse(request.responseText) // Covert JSON into JS Object
-      callback(undefined, data);
-    } else if (request.readyState === 4) {
-      callback('Could not fetch data', undefined);
-    }
-  });
+  return new Promise((resolve, reject) => {
+    const request = new XMLHttpRequest(); // HTTP Request
 
-  request.open('GET', resource); // GET from API Endpoint
-  request.send();
+    request.addEventListener('readystatechange', () => {
+      // console.log(request, request.readyState);
+      if (request.readyState === 4 && request.status == 200) { // 4 stage -> Completed 
+        const data = JSON.parse(request.responseText) // Covert JSON into JS Object
+        resolve(data);
+      } else if (request.readyState === 4) {
+        reject('error getting resource');
+      }
+    });
+
+    request.open('GET', resource); // GET from API Endpoint
+    request.send();
+    })
+  
 };
 
-
-// Callback hell :(
-getTodo('todos-2.json', (error, data) => {
-  console.log(data);
-  getTodo('todos-3.json', (error, data) => {
-    console.log(data);
-    getTodo('todos.json', (error, data) => {
-      console.log(data)
-    })
-  })
+getTodo('todos.json').then(data => {
+  console.log('promise resolved:', data);
+}).catch(error => {
+  console.log('promise rejected:', error);
 });
+
+// Promise example
+
+// const getSomething = () => {
+  
+//   return new Promise((resolve, reject) => {
+//     // fetch something
+//     //resolve('some data');
+//     reject('some error');
+//   });
+// }
+
+// // 1 method (long)
+// getSomething().then((data) => {
+//   console.log(data)
+// }, (error) => {
+//   console.log(error);
+// });
+
+// 2 method (short)
+// getSomething().then(data => {
+//   console.log(data);
+// }).catch(error => {
+//   console.log(error);
+// });
