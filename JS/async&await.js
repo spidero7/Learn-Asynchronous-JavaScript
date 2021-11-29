@@ -10,12 +10,18 @@ const getTodos = async() => {
     const response = await fetch('data/todos.json') 
     // await stop JS (stop assigning a value to variable) until fetch get us a value
     // fetch return a Promise
+
+    if(response.status !== 200) {
+        throw new Error('cannot fetch the data');
+    }
+
     const data = await response.json();
     return data;
 };
 
 getTodos()
-    .then(data => console.log('resolved', data));
+    .then(data => console.log('resolved', data))
+    .catch(error => console.log('rejected', error.message))
 
 // fetch('data/todos.json').then(response => {
 //     console.log('resolved', response)
